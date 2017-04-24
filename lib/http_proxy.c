@@ -313,11 +313,11 @@ CURLcode Curl_proxyCONNECT(struct connectdata *conn,
       nread = 0;
       perline = 0;
 
-      while(nread < BUFSIZE && keepon && !error) {
+      while(nread < (size_t)data->set.buffer_size && keepon && !error) {
         if(Curl_pgrsUpdate(conn))
           return CURLE_ABORTED_BY_CALLBACK;
 
-        if(ptr >= &data->state.buffer[BUFSIZE]) {
+        if(ptr >= &data->state.buffer[data->set.buffer_size]) {
           failf(data, "CONNECT response too large!");
           return CURLE_RECV_ERROR;
         }
